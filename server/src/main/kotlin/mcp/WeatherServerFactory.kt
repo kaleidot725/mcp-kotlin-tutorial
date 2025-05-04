@@ -15,20 +15,16 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
 object WeatherServerFactory {
-    fun build(
-        apiClient: WeatherApiClient,
-    ): Server {
-        val server = Server(
-            Implementation(
-                name = "weather",
-                version = "1.0.0"
-            ),
-            ServerOptions(
-                capabilities = ServerCapabilities(tools = ServerCapabilities.Tools(listChanged = true))
-            )
-        )
+    fun build(apiClient: WeatherApiClient) = Server(
+        Implementation(name = "weather", version = "1.0.0"),
+        ServerOptions(capabilities = ServerCapabilities(tools = ServerCapabilities.Tools(listChanged = true)))
+    ).apply {
+        addAlertsTool(apiClient)
+        addForecastTool(apiClient)
+    }
 
-        server.addTool(
+    private fun Server.addAlertsTool(apiClient: WeatherApiClient) {
+        addTool(
             name = "get_alerts",
             description = """
             Get weather alerts for a US state. Input is Two-letter US state code (e.g. CAY, NY)
@@ -55,8 +51,10 @@ object WeatherServerFactory {
             val alerts = apiClient.getAlerts(state)
             CallToolResult(content = alerts.map { TextContent(it) })
         }
+    }
 
-        server.addTool(
+    private fun Server.addForecastTool(apiClient: WeatherApiClient) {
+        addTool(
             name = "get_forecast",
             description = """
             Get weather forecast for a specific latitude/longitude
@@ -81,7 +79,5 @@ object WeatherServerFactory {
 
             CallToolResult(content = forecast.map { TextContent(it) })
         }
-
-        return server
     }
 }
