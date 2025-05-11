@@ -9,10 +9,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
+import jp.kaleidot725.api.response.Alert
+import jp.kaleidot725.api.response.Forecast
+import jp.kaleidot725.api.response.Points
 import kotlinx.serialization.json.Json
-import model.Alert
-import model.Forecast
-import model.Points
 
 class WeatherApiClient {
     private val httpClient = HttpClient {
@@ -26,6 +26,8 @@ class WeatherApiClient {
         }
         install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
     }
+
+    constructor()
 
     suspend fun getForecast(latitude: Double, longitude: Double): List<String> {
         val points = httpClient.get("/points/$latitude,$longitude").body<Points>()

@@ -1,4 +1,4 @@
-package model
+package jp.kaleidot725.api.response
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

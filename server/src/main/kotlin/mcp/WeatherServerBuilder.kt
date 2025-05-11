@@ -14,7 +14,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
 
-object WeatherServerFactory {
+object WeatherServerBuilder {
     fun build(apiClient: WeatherApiClient) = Server(
         Implementation(name = "weather", version = "1.0.0"),
         ServerOptions(capabilities = ServerCapabilities(tools = ServerCapabilities.Tools(listChanged = true)))

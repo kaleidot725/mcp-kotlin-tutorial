@@ -3,7 +3,7 @@ package jp.kaleidot725
 import io.ktor.utils.io.streams.asInput
 import io.modelcontextprotocol.kotlin.sdk.server.StdioServerTransport
 import jp.kaleidot725.api.WeatherApiClient
-import jp.kaleidot725.mcp.WeatherServerFactory
+import jp.kaleidot725.mcp.WeatherServerBuilder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
 import kotlinx.io.asSink
@@ -13,7 +13,7 @@ import kotlinx.io.buffered
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val client = WeatherApiClient()
-    val server = WeatherServerFactory.build(client)
+    val server = WeatherServerBuilder.build(client)
     val transport = StdioServerTransport(System.`in`.asInput(), System.out.asSink().buffered())
     runBlocking {
         val done = Job()
